@@ -1,4 +1,4 @@
-const data = [
+export const data = [
   {
     age: 0,
     case_id: 1,
