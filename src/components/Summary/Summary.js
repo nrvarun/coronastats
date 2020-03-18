@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import { data } from "../../data";
 import axios from "axios";
 
 class Summary extends Component {
@@ -11,8 +10,7 @@ class Summary extends Component {
       tamilnadu: 0,
       karnataka: 0,
       maharashtra: 0,
-      totalCases: 0,
-      htmlPath: "https://covidout.in/"
+      totalCases: 0
     };
   }
 
@@ -21,7 +19,9 @@ class Summary extends Component {
       "application/json;charset=utf-8";
     axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
-    axios.get("http://localhost:3001/").then(res => this.setData(res));
+    axios
+      .get("https://coronastats-server.now.sh/")
+      .then(res => this.setData(res));
   }
 
   setData = res => {
