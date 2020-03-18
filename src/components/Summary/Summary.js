@@ -19,9 +19,13 @@ class Summary extends Component {
       "application/json;charset=utf-8";
     axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
-    axios
-      .get("https://coronastats-server.now.sh/")
-      .then(res => this.setData(res));
+    axios.get("https://coronastats-server.now.sh/").then(res => {
+      this.setData(res);
+
+      setInterval(() => {
+        this.setData(res);
+      }, 5000);
+    });
   }
 
   setData = res => {
@@ -34,7 +38,7 @@ class Summary extends Component {
 
     const totalCases = data.length;
 
-    console.log(data);
+    // console.log(data);
 
     const tamilnadu = data.filter(
       data => data.state.toLowerCase() === "tamilnadu"
