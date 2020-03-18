@@ -11,14 +11,31 @@ class Summary extends Component {
       tamilnadu: 0,
       karnataka: 0,
       maharashtra: 0,
+      totalCases: 0,
       htmlPath: "https://covidout.in/"
     };
   }
 
   componentDidMount() {
+    axios.defaults.headers.post["Content-Type"] =
+      "application/json;charset=utf-8";
+    axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
+
+    axios.get("http://localhost:3001/").then(res => this.setData(res));
+  }
+
+  setData = res => {
+    console.log(res);
     /**
      * State wise data
      */
+
+    const data = res.data;
+
+    const totalCases = data.length;
+
+    console.log(data);
+
     const tamilnadu = data.filter(
       data => data.state.toLowerCase() === "tamilnadu"
     );
@@ -55,29 +72,23 @@ class Summary extends Component {
       kerala: kerala.length,
       tamilnadu: tamilnadu.length,
       maharashtra: maharashtra.length,
-      karnataka: karnataka.length
+      karnataka: karnataka.length,
+      totalCases
     });
-
-    axios.defaults.headers.post["Content-Type"] =
-      "application/json;charset=utf-8";
-    axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
-
-    axios
-      .get("https://rightsideup.com", {
-        headers: {
-          "Access-Control-Allow-Origin": "*"
-        }
-      })
-      .then(res => {
-        console.log(res);
-      });
-  }
+  };
 
   render() {
-    const { kerala, maharashtra, tamilnadu, karnataka } = this.state;
+    const {
+      kerala,
+      maharashtra,
+      tamilnadu,
+      karnataka,
+      totalCases
+    } = this.state;
 
     return (
       <div>
+        <h4>Total cases : {totalCases}</h4>
         <ul className="data-list">
           <li>
             Kerala: <strong>{kerala}</strong>
