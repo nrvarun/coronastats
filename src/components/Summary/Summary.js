@@ -24,7 +24,7 @@ class Summary extends Component {
 
       setInterval(() => {
         window.location.reload();
-      }, 5000);
+      }, 10000);
     });
   }
 
