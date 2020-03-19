@@ -23,7 +23,7 @@ class Summary extends Component {
       this.setData(res);
 
       setInterval(() => {
-        this.setData(res);
+        window.location.reload();
       }, 5000);
     });
   }
@@ -38,7 +38,7 @@ class Summary extends Component {
 
     const totalCases = data.length;
 
-    // console.log(data);
+    console.log(Object.keys(data));
 
     const tamilnadu = data.filter(
       data => data.state.toLowerCase() === "tamilnadu"
