@@ -1,20 +1,32 @@
 import React from "react";
 
-import "./App.css";
-
+import "./sass/main.scss";
 import Summary from "./components/Summary";
+import DailyCases from "./components/DailyCases/DailyCases";
+import StateWise from "./components/StateWise/StateWise";
 
 function App() {
-  const logo =
-    "https://images.newscientist.com/wp-content/uploads/2020/02/11165812/c0481846-wuhan_novel_coronavirus_illustration-spl.jpg";
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h3>Corona Virus Statistics</h3>
-        <Summary />
-      </header>
-    </div>
+    <section className="content-w mt-4 mt-md-5">
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-6 col-lg-12 mb-3 mb-md-5">
+            <Summary />
+          </div>
+          <div className="col-sm-6 col-lg-12">
+            <div className="row">
+              <div className="col-12 mb-4 mb-md-5">
+                <DailyCases />
+              </div>
+              <div className="col-12 mb-4 mb-md-5">
+                <StateWise />
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-6 col-lg-2"></div>
+        </div>
+      </div>
+    </section>
   );
 }
 

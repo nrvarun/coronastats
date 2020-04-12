@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 
+import dayjs from "dayjs";
 import axios from "axios";
 
 class Summary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      kerala: 0,
-      tamilnadu: 0,
-      karnataka: 0,
-      maharashtra: 0,
-      totalCases: 0
+      date: null,
+      total: 0,
+      active: 0,
+      death: 0,
+      recovered: 0,
     };
   }
 
@@ -19,94 +20,62 @@ class Summary extends Component {
       "application/json;charset=utf-8";
     axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
-    axios.get("https://coronastats-server.now.sh/").then(res => {
+    axios.get("https://v1.api.covindia.com/general").then((res) => {
       this.setData(res);
-
-      setInterval(() => {
-        window.location.reload();
-      }, 10000);
     });
   }
 
-  setData = res => {
-    console.log(res);
-    /**
-     * State wise data
-     */
-
-    const data = res.data;
-
-    const totalCases = data.length;
-
-    console.log(Object.keys(data));
-
-    const tamilnadu = data.filter(
-      data => data.state.toLowerCase() === "tamilnadu"
-    );
-    const kerala = data.filter(data => data.state.toLowerCase() === "kerala");
-    const maharashtra = data.filter(
-      data => data.state.toLowerCase() === "maharashtra"
-    );
-    const karnataka = data.filter(
-      data => data.state.toLowerCase() === "karnataka"
-    );
-
-    console.log(
-      "tamilnadu : " + tamilnadu.length,
-      "kerala : " + kerala.length,
-      "maharashtra : " + maharashtra.length
-    );
-
-    /**
-     * City wise data
-     */
-    const chennai = data.filter(data => data.city.toLowerCase() === "chennai");
-    const bangalore = data.filter(
-      data => data.city.toLowerCase() === "bangalore"
-    );
-    const mumbai = data.filter(data => data.city.toLowerCase() === "mumbai");
-
-    console.log(
-      "chennai : " + chennai.length,
-      "bangalore : " + bangalore.length,
-      "mumbai : " + mumbai.length
-    );
+  setData = (res) => {
+    const { deathTotal, infectedTotal, lastUpdatedTime, totalCured } = res.data;
 
     this.setState({
-      kerala: kerala.length,
-      tamilnadu: tamilnadu.length,
-      maharashtra: maharashtra.length,
-      karnataka: karnataka.length,
-      totalCases
+      date: lastUpdatedTime,
+      total: infectedTotal + totalCured,
+      active: infectedTotal,
+      death: deathTotal,
+      recovered: totalCured,
     });
   };
 
   render() {
-    const {
-      kerala,
-      maharashtra,
-      tamilnadu,
-      karnataka,
-      totalCases
-    } = this.state;
+    const { total, active, recovered, death, date } = this.state;
 
     return (
-      <div>
-        <h4>Total cases : {totalCases}</h4>
-        <ul className="data-list">
-          <li>
-            Kerala: <strong>{kerala}</strong>
-          </li>
-          <li>
-            Tamilnadu: <strong>{tamilnadu}</strong>
-          </li>
-          <li>
-            Karnataka: <strong>{karnataka}</strong>
-          </li>
-          <li>
-            Maharashtra: <strong>{maharashtra}</strong>
-          </li>
-        </ul>
+      <div className="row">
+        <div className="col-12 mb-3">
+          <p className="text-xl fnt-w-600">
+            COVID-19 India Summary
+            <span className="mx-2 text-lg darkblue">
+              {`( As of ${dayjs(date, "DD/MM/YYY HH:mm").format(
+                "DD MMM YYYY - HH:mm"
+              )} )`}
+            </span>
+          </p>
+        </div>
+        <div className="col-sm-6 col-lg-3">
+          <div className="content-card">
+            <p className="content-card__title">Confirmed</p>
+            <p className="content-card__count red">{total}</p>
+          </div>
+        </div>
+        <div className="col-sm-6 col-lg-3">
+          <div className="content-card">
+            <p className="content-card__title">Active</p>
+            <p className="content-card__count orange">{active}</p>
+          </div>
+        </div>
+        <div className="col-sm-6 col-lg-3">
+          <div className="content-card">
+            <p className="content-card__title">Recovered</p>
+            <p className="content-card__count green">{recovered}</p>
+          </div>
+        </div>
+        <div className="col-sm-6 col-lg-3">
+          <div className="content-card">
+            <p className="content-card__title">Death</p>
+            <p className="content-card__count lightblue">{death}</p>
+          </div>
+        </div>
       </div>
     );
   }
