@@ -15,14 +15,25 @@ class Summary extends Component {
     };
   }
 
+  interval = null;
+
   componentDidMount() {
     axios.defaults.headers.post["Content-Type"] =
       "application/json;charset=utf-8";
     axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
+    this.getData();
+    this.interval = setInterval(this.getData, 5000);
+  }
+
+  getData = () => {
     axios.get("https://v1.api.covindia.com/general").then((res) => {
       this.setData(res);
     });
+  };
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   setData = (res) => {

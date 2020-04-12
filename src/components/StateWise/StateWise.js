@@ -28,17 +28,24 @@ class StateWise extends Component {
     ],
   };
 
+  interval = null;
+
   componentDidMount() {
     axios.defaults.headers.post["Content-Type"] =
       "application/json;charset=utf-8";
     axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
+    this.getData();
+    this.interval = setInterval(this.getData, 5000);
+  }
+
+  getData = () => {
     axios
       .get("https://v1.api.covindia.com/states-affected-numbers")
       .then((res) => {
         this.setData(res);
       });
-  }
+  };
 
   setData = (res) => {
     const { data } = res;
