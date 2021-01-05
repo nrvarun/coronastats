@@ -29,7 +29,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "apexcharts": "^3.18.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dayjs": "^1.8.24",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
